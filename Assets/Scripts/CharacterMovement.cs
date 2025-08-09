@@ -1,43 +1,30 @@
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(InputReader))]
 public class CharacterMovement : MonoBehaviour
 {
-    private const string HorizontalAxis = "Horizontal";
-    private const string VerticalAxis = "Vertical";
-
     [Header("Movement Settings")]
     [SerializeField] private float _moveSpeed = 5f;
     [SerializeField] private float _rotationSpeed = 10f;
 
     private CharacterController _controller;
     private Transform _cameraTransform;
+    private InputReader _inputReader;
 
     private void Awake()
     {
         _controller = GetComponent<CharacterController>();
         _cameraTransform = Camera.main.transform;
+        _inputReader = GetComponent<InputReader>();
     }
 
     private void Update()
     {
-        Vector2 input = GetInput();
+        Vector2 input = _inputReader.ReadInput();
 
-        if (ShouldMove(input))
+        if (_inputReader.HasInput())
             MoveCharacter(input);
-    }
-
-    private Vector2 GetInput()
-    {
-        return new Vector2(
-            Input.GetAxis(HorizontalAxis),
-            Input.GetAxis(VerticalAxis)
-        );
-    }
-
-    private bool ShouldMove(Vector2 input)
-    {
-        return input.magnitude > 0.01f;
     }
 
     private void MoveCharacter(Vector2 input)

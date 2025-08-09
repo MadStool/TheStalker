@@ -7,7 +7,7 @@ public class LookAtTarget : MonoBehaviour
 
     public Transform Target { get => _target; set => _target = value; }
 
-    private void FixedUpdate()
+    private void Update()
     {
         if (_target == null)
             return;
@@ -37,7 +37,7 @@ public class LookAtTarget : MonoBehaviour
         transform.rotation = Quaternion.Slerp(
             transform.rotation,
             targetRotation,
-            _rotationSpeed * Time.fixedDeltaTime
+            _rotationSpeed * Time.deltaTime
         );
     }
 }
